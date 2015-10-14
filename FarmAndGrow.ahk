@@ -21,8 +21,37 @@ If (A_IsCompiled)
 G_Version = 0.5b
 G_ScriptName = Farm & Grow Helper
 ;StringLeft, G_ScriptName, A_ScriptName, InStr(A_ScriptName, .)-1 ;StrLen(A_ScriptName)-4 ;remove file extension
-G_StartX := 790
+G_StartX := 690
 G_StartY := 30
+G_StartW := 550
+G_StartH := 300
+G_WidthOffset := 20
+G_HeightOffset := 15
+G_LV_Contents := Object()
+;Productivity
+G_LV_Contents.Insert([1, "Furrow Plough", "Time to complete field tasks reduced by 30%", 10, "X", "X", "X", "Productivity"]) ;%
+G_LV_Contents.Insert([2, "Gardening", "Allows planting of grain", 15, "X", "X", "X", "Productivity"])
+G_LV_Contents.Insert([3, "Crop Rotation", "+1 yield for grain and vegetables", 20, "X", "X", "X", "Productivity"])
+G_LV_Contents.Insert([4, "Tilling", "Grain and vegetables grow 50% faster", 30, "X", "X", "X", "Productivity"]) ;%
+G_LV_Contents.Insert([5, "Fertilizer", "Additional +1 yield for grain and vegetables", 40, "X", "X", "X", "Productivity"])
+G_LV_Contents.Insert([6, "Coppicing", "Doubles yield when harvesting wood", 50, "X", "X", "X", "Productivity"])
+G_LV_Contents.Insert([7, "", "      Total to complete tree:", "XXX", "XX", "XX", "XX", "Productivity"])
+
+;Infrastructure 
+G_LV_Contents.Insert([1, "Roads", "25% increase to movement speed", 10, "X", "X", "X", "Infrastructure"]) ;% 
+G_LV_Contents.Insert([2, "Pastures", " Pastures allow keeping of animals ", 20, "X", "X", "X", "Infrastructure"])
+G_LV_Contents.Insert([3, "Windmill", "Building allows milling of grain into flour", 25, "X", "X", "X", "Infrastructure"])
+G_LV_Contents.Insert([4, "Bakery", "Allows baking task (flour -> bread) in the house", 30, "X", "X", "X", "Infrastructure"])
+G_LV_Contents.Insert([5, "Well", "Health improvement building", 40, "X", "X", "X", "Infrastructure"])
+G_LV_Contents.Insert([6, "Brick Oven", "Reduces time taken to bake bread by 50", 50, "X", "X", "X", "Infrastructure"])
+
+;Enlightenment
+G_LV_Contents.Insert([1, "Crafting", "Increase income of town labour to 8 gold", 10, "X", "X", "X", "Enlightenment"])
+G_LV_Contents.Insert([2, "Horse and Cart", "More goods available to buy at the market", 15, "X", "X", "X", "Enlightenment"])
+G_LV_Contents.Insert([3, "Sanitation", "+1 Health every year. Increases maximum health", 20, "X", "X", "X", "Enlightenment"])
+G_LV_Contents.Insert([4, "Bartering", "Better prices at the market", 30, "X", "X", "X", "Enlightenment"])
+G_LV_Contents.Insert([5, "Profession", "Increase income of town labour to 15 gold", 40, "X", "X", "X", "Enlightenment"])
+G_LV_Contents.Insert([6, "University", "Doubles benefit of school education", 50, "X", "X", "X", "Enlightenment"])
 
 ;END - Global variables
 
@@ -56,10 +85,19 @@ Gui, Menu, MyMenuBar
 ;Gui, Add, Button, gExit, Exit This Example
 
 ;BEGIN TABS
-Gui, Add, Tab2, vMyTabView w400, Skill Tree|Notes|Appearance|Screen Clips|Settings
+TempH := G_StartH - (G_HeightOffset *2)
+TempW := G_StartW - (G_WidthOffset *2)
+Gui, Add, Tab2, vMyTabView w%TempW% h%TempH%, Skill Tree|Notes|Appearance|Screen Clips|Settings
 ;BEGIN TAB1 - Skill Tree List View
+;xm+10 yp+30
 ; Create the ListView with two columns, Name and Size:
-Gui, Add, ListView, vMyListView w380 r10 gMyListView, Name|Size (KB)
+TempH := TempH - (G_HeightOffset *4.75)
+Gui, Add, ListView, vMyListView Grid w380 h%TempH% gMyListView, No|Name|Description|Know|Trips|KWC|TWC|Category
+TempY := G_StartH - (G_HeightOffset *4)
+Gui, Add, Button, xm+20 y%TempY%, All
+Gui, Add, Button, x+10 y%TempY%, Productivity
+Gui, Add, Button, x+10 y%TempY%, Infrastructure
+Gui, Add, Button, x+10 y%TempY%, Enlightenment
 ;From: http://www.autohotkey.com/board/topic/57768-tabbed-guis-borders/
 Gui, Tab, 5
 Gui, Add, Checkbox, vMyCheckbox, Sample checkbox 
@@ -73,13 +111,20 @@ Gui, +Resize  ; Make the window resizable.
 ;Gui, Tab,  ; i.e. subsequently-added controls will not belong to the tab control. 
 ;Gui, Add, Button,vMyButton default xm, OK  ; xm puts it at the bottom left corner. 
 
+/*
 ; Gather a list of file names from a folder and put them into the ListView:
 Loop, %A_MyDocuments%\*.*
     LV_Add("", A_LoopFileName, A_LoopFileSizeKB)
 
 LV_ModifyCol()  ; Auto-size each column to fit its contents.
 LV_ModifyCol(2, "Integer")  ; For sorting purposes, indicate that column 2 is an integer.
+*/
 
+For index, EachVal in G_LV_Contents
+	LV_Add("Test", EachVal[1], EachVal[2], EachVal[3], EachVal[4], EachVal[5], EachVal[6], EachVal[7], EachVal[8])
+
+LV_ModifyCol()  ; Auto-size each column to fit its contents.
+LV_ModifyCol(1, "Integer")  ; For sorting purposes, indicate that column 2 is an integer.
 
 
 ; DISPLAY the window and return. The script will be notified whenever the user double clicks a row.
@@ -118,18 +163,21 @@ GuiSize:
 if ErrorLevel = 1  ; The window has been minimized.  No action needed.
     return
 ; Otherwise, the window has been resized or maximized. Resize the Edit control to match.
-WidthOffset := 20
-HeightOffset := 15
+WidthOffset := G_WidthOffset
+HeightOffset := G_HeightOffset
 NewTabsWidth := A_GuiWidth - WidthOffset 
-NewTabsHeight := A_GuiHeight - HeightOffset 
+NewTabsHeight := A_GuiHeight - HeightOffset
 NewWidth := NewTabsWidth - WidthOffset*.95
-NewHeight := NewTabsHeight - HeightOffset*2.5
-newY := A_GuiHeight-24
+NewHeight := NewTabsHeight - HeightOffset*4.5
+newY := A_GuiHeight - (G_HeightOffset *2.65)
 GuiControl, Move, MyTabView, W%NewTabsWidth% H%NewTabsHeight%
 GuiControl, Move, MyListView, W%NewWidth% H%NewHeight%
 GuiControl, Move, MyEdit, W%NewWidth% H%NewHeight%
 ;GuiControl, Move, MyButton , y%newY%
-
+GuiControl, Move, All , y%newY%
+GuiControl, Move, Productivity , y%newY%
+GuiControl, Move, Infrastructure , y%newY%
+GuiControl, Move, Enlightenment , y%newY%
 return
 
 GuiClose:  ; Indicate that the script should exit automatically when the window is closed.
