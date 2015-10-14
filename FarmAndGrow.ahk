@@ -29,29 +29,31 @@ G_WidthOffset := 20
 G_HeightOffset := 15
 G_LV_Contents := Object()
 ;Productivity
-G_LV_Contents.Insert([1, "Furrow Plough", "Time to complete field tasks reduced by 30%", 10, "X", "X", "X", "Productivity"]) ;%
-G_LV_Contents.Insert([2, "Gardening", "Allows planting of grain", 15, "X", "X", "X", "Productivity"])
-G_LV_Contents.Insert([3, "Crop Rotation", "+1 yield for grain and vegetables", 20, "X", "X", "X", "Productivity"])
-G_LV_Contents.Insert([4, "Tilling", "Grain and vegetables grow 50% faster", 30, "X", "X", "X", "Productivity"]) ;%
-G_LV_Contents.Insert([5, "Fertilizer", "Additional +1 yield for grain and vegetables", 40, "X", "X", "X", "Productivity"])
-G_LV_Contents.Insert([6, "Coppicing", "Doubles yield when harvesting wood", 50, "X", "X", "X", "Productivity"])
-G_LV_Contents.Insert([7, "", "      Total to complete tree:", "XXX", "XX", "XX", "XX", "Productivity"])
+G_LV_Contents.Insert([1, "Furrow Plough", "Time to complete field tasks reduced by 30%", 10, 1, 25, 1, 25, "Productivity"]) ;%
+G_LV_Contents.Insert([2, "Gardening", "Allows planting of grain", 15, 2, 50, 1, 25, "Productivity"])
+G_LV_Contents.Insert([3, "Crop Rotation", "+1 yield for grain and vegetables", 20, 2, 50, 1, 25, "Productivity"])
+G_LV_Contents.Insert([4, "Tilling", "Grain and vegetables grow 50% faster", 30, 3, 75, 2, 50, "Productivity"]) ;%
+G_LV_Contents.Insert([5, "Fertilizer", "Additional +1 yield for grain and vegetables", 40, 4, 100, 2, 50, "Productivity"])
+G_LV_Contents.Insert([6, "Coppicing", "Doubles yield when harvesting wood", 50, 5, 125, 3, 75, "Productivity"])
+G_LV_Contents.Insert([7, "", "      Total to complete tree:", 165, 17, 425, 9, 225, "Productivity"])
 
 ;Infrastructure 
-G_LV_Contents.Insert([1, "Roads", "25% increase to movement speed", 10, "X", "X", "X", "Infrastructure"]) ;% 
-G_LV_Contents.Insert([2, "Pastures", " Pastures allow keeping of animals ", 20, "X", "X", "X", "Infrastructure"])
-G_LV_Contents.Insert([3, "Windmill", "Building allows milling of grain into flour", 25, "X", "X", "X", "Infrastructure"])
-G_LV_Contents.Insert([4, "Bakery", "Allows baking task (flour -> bread) in the house", 30, "X", "X", "X", "Infrastructure"])
-G_LV_Contents.Insert([5, "Well", "Health improvement building", 40, "X", "X", "X", "Infrastructure"])
-G_LV_Contents.Insert([6, "Brick Oven", "Reduces time taken to bake bread by 50", 50, "X", "X", "X", "Infrastructure"])
+G_LV_Contents.Insert([1, "Roads", "25% increase to movement speed", 10, 1, 25, 1, 25, "Infrastructure"]) ;% 
+G_LV_Contents.Insert([2, "Pastures", "Pastures allow keeping of animals ", 20, 2, 50, 1, 25, "Infrastructure"])
+G_LV_Contents.Insert([3, "Windmill", "Building allows milling of grain into flour", 25, 3, 75, 2, 50, "Infrastructure"])
+G_LV_Contents.Insert([4, "Bakery", "Allows baking task (flour -> bread) in the house", 30, 3, 75, 2, 50, "Infrastructure"])
+G_LV_Contents.Insert([5, "Well", "Health improvement building", 40, 4, 100, 2, 50, "Infrastructure"])
+G_LV_Contents.Insert([6, "Brick Oven", "Reduces time taken to bake bread by 50%", 50, 5, 125, 3, 75, "Infrastructure"])  ;%
+G_LV_Contents.Insert([7, "", "      Total to complete tree:", 175, 18, 450, 9, 225, "Infrastructure"])
 
 ;Enlightenment
-G_LV_Contents.Insert([1, "Crafting", "Increase income of town labour to 8 gold", 10, "X", "X", "X", "Enlightenment"])
-G_LV_Contents.Insert([2, "Horse and Cart", "More goods available to buy at the market", 15, "X", "X", "X", "Enlightenment"])
-G_LV_Contents.Insert([3, "Sanitation", "+1 Health every year. Increases maximum health", 20, "X", "X", "X", "Enlightenment"])
-G_LV_Contents.Insert([4, "Bartering", "Better prices at the market", 30, "X", "X", "X", "Enlightenment"])
-G_LV_Contents.Insert([5, "Profession", "Increase income of town labour to 15 gold", 40, "X", "X", "X", "Enlightenment"])
-G_LV_Contents.Insert([6, "University", "Doubles benefit of school education", 50, "X", "X", "X", "Enlightenment"])
+G_LV_Contents.Insert([1, "Crafting", "Increase income of town labour to 8 gold", 10, 1, 25, "X", "X", "Enlightenment"])
+G_LV_Contents.Insert([2, "Horse & Cart", "More goods available to buy at the market", 15, 2, 50, "X", "X", "Enlightenment"])
+G_LV_Contents.Insert([3, "Sanitation", "+1 Health every year. Increases maximum health", 20, 2, 50, "X", "X", "Enlightenment"])
+G_LV_Contents.Insert([4, "Bartering", "Better prices at the market", 30, 3, 75, "X", "X", "Enlightenment"])
+G_LV_Contents.Insert([5, "Profession", "Increase income of town labour to 15 gold", 40, 4, 100, "X", "X", "Enlightenment"])
+G_LV_Contents.Insert([6, "University", "Doubles benefit of school education", 50, 5, 125, "X", "X", "Enlightenment"])
+G_LV_Contents.Insert([7, "", "      Total to complete tree:", 165, 17, 425, "XX", "XX", "Enlightenment"])
 
 ;END - Global variables
 
@@ -92,12 +94,12 @@ Gui, Add, Tab2, vMyTabView w%TempW% h%TempH%, Skill Tree|Notes|Appearance|Screen
 ;xm+10 yp+30
 ; Create the ListView with two columns, Name and Size:
 TempH := TempH - (G_HeightOffset *4.75)
-Gui, Add, ListView, vMyListView Grid w380 h%TempH% gMyListView, No|Name|Description|Know|Trips|KWC|TWC|Category
+Gui, Add, ListView, vMyListView Grid w380 h%TempH% gMyListView, No|Name|Description|Know|Trips|Gold|TWC|GWC|Category
 TempY := G_StartH - (G_HeightOffset *4)
-Gui, Add, Button, xm+20 y%TempY%, All
-Gui, Add, Button, x+10 y%TempY%, Productivity
-Gui, Add, Button, x+10 y%TempY%, Infrastructure
-Gui, Add, Button, x+10 y%TempY%, Enlightenment
+Gui, Add, Button, xm+20 y%TempY% gButton_Handler, All
+Gui, Add, Button, x+10 y%TempY% gButton_Handler, Productivity
+Gui, Add, Button, x+10 y%TempY% gButton_Handler, Infrastructure
+Gui, Add, Button, x+10 y%TempY% gButton_Handler, Enlightenment
 ;From: http://www.autohotkey.com/board/topic/57768-tabbed-guis-borders/
 Gui, Tab, 5
 Gui, Add, Checkbox, vMyCheckbox, Sample checkbox 
@@ -121,7 +123,7 @@ LV_ModifyCol(2, "Integer")  ; For sorting purposes, indicate that column 2 is an
 */
 
 For index, EachVal in G_LV_Contents
-	LV_Add("Test", EachVal[1], EachVal[2], EachVal[3], EachVal[4], EachVal[5], EachVal[6], EachVal[7], EachVal[8])
+	LV_Add("Test", EachVal[1], EachVal[2], EachVal[3], EachVal[4], EachVal[5], EachVal[6], EachVal[7], EachVal[8], EachVal[9])
 
 LV_ModifyCol()  ; Auto-size each column to fit its contents.
 LV_ModifyCol(1, "Integer")  ; For sorting purposes, indicate that column 2 is an integer.
@@ -132,6 +134,24 @@ Gui, +AlwaysOnTop
 Gui, Show, x%G_StartX% y%G_StartY%, %G_ScriptName%
 gosub EnableKeyMap
 return
+
+Button_Handler:
+Enlightenment:
+;MsgBox A_GuiEvent: %A_GuiControl%
+
+LV_Delete()
+For index, EachVal in G_LV_Contents
+{
+	If (A_GuiControl = "All") or (A_GuiControl = EachVal[9])
+		LV_Add("Test", EachVal[1], EachVal[2], EachVal[3], EachVal[4], EachVal[5], EachVal[6], EachVal[7], EachVal[8], EachVal[9])
+}
+	
+	
+
+LV_ModifyCol()  ; Auto-size each column to fit its contents.
+LV_ModifyCol(1, "Integer")  ; For sorting purposes, indicate that column 2 is an integer.
+
+Return
 
 MyListView:
 if A_GuiEvent = DoubleClick
